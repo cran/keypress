@@ -1,0 +1,9 @@
+f4c100c57df2dd2e92e61c57b2968e0d *DESCRIPTION
+8488c7e8cbfc04df9ff69dd011f878da *LICENSE
+bea63676c6b0e090af4eaf4f77dfa21e *NAMESPACE
+2e51ae0798ba24b193a9ee6dee483cf8 *R/keypress.R
+16c1ec28cc43b68da1c5229ca1264cba *inst/NEWS.md
+7d4b310dab1942e825c15918c0c88bef *inst/README.md
+237c8f2d08851738e11774be159b7e5e *man/has_keypress_support.Rd
+3074ebc0fe514ba503bc6ed0ae651487 *man/keypress.Rd
+b55f805dac0c62209dd6df0eae2d3a57 *src/keypress.c
