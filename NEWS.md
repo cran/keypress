@@ -1,4 +1,9 @@
 
+# 1.2.0
+
+- Support RStudio terminal.
+- Better detection of support in Emacs.
+
 # 1.1.1
 
 - Use native routine registration to avoid R CMD check warnings.

@@ -12,35 +12,36 @@ available now.}
 }
 \value{
 The key pressed, a character scalar. For non-blocking reads
-  NA is returned if no keys are available.
+NA is returned if no keys are available.
 }
 \description{
 It currently only works at Linux/Unix and OSX terminals,
 and at the Windows command line. see \code{\link{has_keypress_support}}.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \details{
 The following special keys are supported:
 \itemize{
-  \item Arrow keys: \sQuote{up}, \sQuote{down}, \sQuote{right},
-    \sQuote{left}.
-  \item Function keys: from \sQuote{f1} to \sQuote{f12}.
-  \item Others: sQuote{home}, \sQuote{end},
-    \sQuote{insert}, \sQuote{delete}, \sQuote{pageup},
-    \sQuote{pagedown}, \sQuote{tab}, \sQuote{enter},
-    \sQuote{backspace} (same as \sQuote{delete} on OSX keyboards),
-    \sQuote{escape}.
-  \item Control with one of the following keys: \sQuote{a}, \sQuote{b},
-    \sQuote{c}, \sQuote{d}, \sQuote{e}, \sQuote{f}, \sQuote{h},
-    \sQuote{k}, \sQuote{l}, \sQuote{n}, \sQuote{p}, \sQuote{t},
-    \sQuote{u}, \sQuote{w}.
+\item Arrow keys: 'up', 'down', 'right', 'left'.
+\item Function keys: from 'f1' to 'f12'.
+\item Others: 'home', 'end', 'insert', 'delete', 'pageup', 'pagedown',
+'tab', 'enter', 'backspace' (same as 'delete' on OSX keyboards),
+'escape'.
+\item Control with one of the following keys: 'a', 'b', 'c', 'd', 'e', 'f',
+'h', 'k', 'l', 'n', 'p', 't', 'u', 'w'.
 }
 }
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 x <- keypress()
-cat("You pressed key", x, "\\n")
-}
+cat("You pressed key", x, "\n")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-Other keypress: \code{\link{has_keypress_support}}
+Other keypress function: 
+\code{\link{has_keypress_support}()}
 }
+\concept{keypress function}

@@ -1,38 +1,32 @@
 
+#' @theme assets/extra.css assets/rd.js
+NULL
+
 #' Read a single keypress at the terminal
 #'
 #' It currently only works at Linux/Unix and OSX terminals,
 #' and at the Windows command line. see \code{\link{has_keypress_support}}.
 #'
 #' The following special keys are supported:
-#' \itemize{
-#'   \item Arrow keys: \sQuote{up}, \sQuote{down}, \sQuote{right},
-#'     \sQuote{left}.
-#'   \item Function keys: from \sQuote{f1} to \sQuote{f12}.
-#'   \item Others: sQuote{home}, \sQuote{end},
-#'     \sQuote{insert}, \sQuote{delete}, \sQuote{pageup},
-#'     \sQuote{pagedown}, \sQuote{tab}, \sQuote{enter},
-#'     \sQuote{backspace} (same as \sQuote{delete} on OSX keyboards),
-#'     \sQuote{escape}.
-#'   \item Control with one of the following keys: \sQuote{a}, \sQuote{b},
-#'     \sQuote{c}, \sQuote{d}, \sQuote{e}, \sQuote{f}, \sQuote{h},
-#'     \sQuote{k}, \sQuote{l}, \sQuote{n}, \sQuote{p}, \sQuote{t},
-#'     \sQuote{u}, \sQuote{w}.
-#' }
+#' * Arrow keys: 'up', 'down', 'right', 'left'.
+#' * Function keys: from 'f1' to 'f12'.
+#' * Others: 'home', 'end', 'insert', 'delete', 'pageup', 'pagedown',
+#'     'tab', 'enter', 'backspace' (same as 'delete' on OSX keyboards),
+#'     'escape'.
+#' * Control with one of the following keys: 'a', 'b', 'c', 'd', 'e', 'f',
+#'     'h', 'k', 'l', 'n', 'p', 't', 'u', 'w'.
 #'
 #' @param block Whether to wait for a key press, if there is none
 #'   available now.
 #' @return The key pressed, a character scalar. For non-blocking reads
 #'   NA is returned if no keys are available.
 #'
-#' @family keypress
+#' @family keypress function
 #' @useDynLib keypress, .registration = TRUE, .fixes = "C_"
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' x <- keypress()
 #' cat("You pressed key", x, "\n")
-#' }
 
 keypress <- function(block = TRUE) {
   if (!has_keypress_support()) {
@@ -46,22 +40,41 @@ keypress <- function(block = TRUE) {
 #' Check if the current platform/terminal supports reading
 #' single keys.
 #'
+#' @details
+#' Supported platforms:
+#' * Terminals in Windows and Unix.
+#' * RStudio terminal.
+#'
+#' Not supported:
+#' * RStudio (if not in the RStudio terminal).
+#' * R.app on macOS.
+#' * Rgui on Windows.
+#' * Emacs ESS.
+#' * Others.
+#'
 #' @return Whether there is support for waiting for individual
 #' keypressses.
 #'
-#' @family keypress
+#' @family keypress function
 #' @export
 #' @examples
 #' has_keypress_support()
 
 has_keypress_support <- function() {
-  ## Supported if we have a terminal, and we are not in RStudio,
-  ## not in R.app, not in Rgui, and not in Emacs.
-  ## Yes, pretty limited.
-  isatty(stdin()) &&
-    Sys.getenv("RSTUDIO") != 1 &&
-    Sys.getenv("R_GUI_APP_VERSION") == "" &&
-    .Platform$GUI != "Rgui" &&
-    ! identical(getOption("STERM"), "iESS") &&
-    Sys.getenv("EMACS") != "t"
+  ## Supported if we have a terminal or RStudio terminal.
+  ## Not supported otherwise in RStudio, R.app, Rgui or Emacs
+
+  rs <- rstudio$detect()
+
+  if (rs$type != "not_rstudio") {
+    rs$has_canonical_mode
+
+  } else {
+    isatty(stdin()) &&
+      Sys.getenv("R_GUI_APP_VERSION") == "" &&
+      .Platform$GUI != "Rgui" &&
+      ! identical(getOption("STERM"), "iESS") &&
+      Sys.getenv("EMACS") != "t" &&
+      Sys.getenv("TERM") != "dumb"
+  }
 }
