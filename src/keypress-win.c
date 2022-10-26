@@ -1,6 +1,6 @@
 
 /* Avoid warning about empty compilation unit. */
-void keypress_win_dummy() { }
+void keypress_win_dummy(void) { }
 
 #ifdef WIN32
 
@@ -10,7 +10,7 @@ void keypress_win_dummy() { }
 
 static HANDLE console_in, console_out;
 
-static int enableRawMode() {
+static int enableRawMode(void) {
   if (!console_in) {
     HANDLE hin, hout;
     hin = GetStdHandle(STD_INPUT_HANDLE);
@@ -27,18 +27,39 @@ static int enableRawMode() {
   return 0;
 }
 
-static int disableRawMode() {
+static int disableRawMode(void) {
   /* Nothing to do yet */
   return 0;
 }
 
-keypress_key_t getWinChar() {
+// Below not needed for Windows terminal
+
+SEXP save_term_status(void) {
+  return R_NilValue;
+}
+
+SEXP restore_term_status(void) {
+  return R_NilValue;
+}
+
+SEXP set_term_echo(SEXP s_echo) {
+  return R_NilValue;
+}
+
+keypress_key_t getWinChar(int block) {
   INPUT_RECORD rec;
   DWORD count;
   char buf[2] = { 0, 0 };
   int chr;
 
   for (;; Sleep(10)) {
+
+    GetNumberOfConsoleInputEvents(console_in, &count);
+
+    if ((count == 0) && (block == NON_BLOCKING)) {
+      return keypress_special(KEYPRESS_NONE);
+    }
+
     if (! ReadConsoleInputA(console_in, &rec, 1, &count)) {
       R_THROW_SYSTEM_ERROR("Cannot read from console");
     }
@@ -113,7 +134,7 @@ keypress_key_t keypress_read(int block) {
     R_THROW_SYSTEM_ERROR("Cannot query console information");
   }
 
-  res = getWinChar();
+  res = getWinChar(block);
 
   disableRawMode();
 
