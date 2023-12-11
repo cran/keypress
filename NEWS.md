@@ -1,3 +1,7 @@
+# keypress 1.3.1
+
+- Fix a `*printf()` format string on Windows.
+
 # keypress 1.3.0
 
 - Allow turning echo off for non-blocking Linux and macOS terminals
